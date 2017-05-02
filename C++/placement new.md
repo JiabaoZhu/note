@@ -1,8 +1,10 @@
 # placement new  
 **`placement new` 就是在用户指定的内存位置上构建新的对象，这个构建过程不需要额外分配内存，只需要调用对象的构造函数即可。**  
 举例来说：  
-```  
-class Foo { };  
+```C++  
+class Foo  
+{  
+};  
 Foo* pFoo = new Foo();  
 ```  
 `pFoo` 指向的对象的地址你是不能决定的，因为 `new` 已经为你做了这些工作。  
@@ -14,7 +16,7 @@ Foo* pFoo = new Foo();
 2. 第二步你调用类的构造函数在自己分配的内存上构建新的对象。  
 
 ## `placement new` 的标准用法  
-```  
+```C++  
 class Foo  
 {  
     float m_value;  
@@ -26,26 +28,26 @@ public:
 ```  
 
 1. 分配内存：  
-```  
+```C++  
 char* buff = new char[sizeof(Foo)];  
 memset(buff, 0, sizeof(Foo));  
 ```  
 2. 构建对象：  
-```  
+```C++  
 Foo* pFoo = new (buff)Foo;  
 ```  
 3. 使用对象：  
-```  
+```C++  
 pFoo->print();  
 pFoo->setValue(1.0f);  
 pFoo->getValue();  
 ```  
 4. 析构对象，显式的调用类的析构函数：  
-```  
+```C++  
 pFoo->~Foo();  
 ```  
 5. 销毁内存：  
-```  
+```C++  
 delete[] buff;  
 ```  
 上面5个步骤是标准的 `placement new` 的使用方法。  
