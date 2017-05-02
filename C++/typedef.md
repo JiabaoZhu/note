@@ -7,12 +7,12 @@
 char line[81];  
 char text[81];  
 ```  
-定义一个 `typedef`，每当要用到相同类型和大小的数组时，可以这样：
+定义一个 `typedef`，每当要用到相同类型和大小的数组时，可以这样：  
 ```  
 typedef char Line[81];  
 Line line, text;  
 ```  
-同样，可以象下面这样隐藏指针语法：
+同样，可以象下面这样隐藏指针语法：  
 ```  
 typedef char* pstr;  
 pstr str = "abc";  
@@ -41,11 +41,11 @@ PrintHelloHandle pFunc;
 pFunc = &printHello;  
 (*pFunc)(110);  
 ```  
-将 `pFunc` 替换 `typedef void (*PrintHelloHandle)(int)`，展开之后就是：
+将 `pFunc` 替换 `typedef void (*PrintHelloHandle)(int)`，展开之后就是：  
 ```  
 void (*pFunc)(int);  
 ```  
-其实就是声明一个 `pFunc` 函数指针而已，根本没有 `PrintHelloHandle` 这种类型。
+其实就是声明一个 `pFunc` 函数指针而已，根本没有 `PrintHelloHandle` 这种类型。  
 以后其他地方的程序需要声明类似的函数指针，只需要下面代码:  
 ```  
 PrintHelloHandle pFuncOther;  
@@ -60,7 +60,7 @@ PrintHelloHandle pFuncOther;
 举例：`struct tP { int x; int y; };`，定义对象格式为 `struct tP tt1;`。而在 C++ 中直接使用结构名，不用带上 `struct` 关键字，如 `tP tt1;` 即可。  
 当结构体如下定义：`typedef struct tP { int x; int y; } P;` 时，则使用 `P pp1` 定义对象。  
 3. **用 `typedef` 定义与平台无关的类型。**  
-举例：定义一个 `REAL` 的浮点类型，使其在目标平台上表示最高精度类型，则 `typedef long double REAL`，在不支持 `long double` 平台，更改为 `typedef double REAL` 即可。跨平台时，只要改 `typedef` 本身，不用对其他源码做修改。因为 `typedef` 是定义一种类型的新别名，不是简单的字符串替换，故比宏更稳健。此优点在我们写代码的过程中可以减少不少代码量。
+举例：定义一个 `REAL` 的浮点类型，使其在目标平台上表示最高精度类型，则 `typedef long double REAL`，在不支持 `long double` 平台，更改为 `typedef double REAL` 即可。跨平台时，只要改 `typedef` 本身，不用对其他源码做修改。因为 `typedef` 是定义一种类型的新别名，不是简单的字符串替换，故比宏更稳健。此优点在我们写代码的过程中可以减少不少代码量。  
 4. **为复杂的声明定义一个新的简单的别名。**  
 方法：在原来的声明里逐步用别名替换一部分复杂声明，如此循环，把带变量的部分留到最后替换，得到的即为原声明的最简化版。  
 举例：`void (*b[10])(void(*)());`，变量名为 `b`。先替换右边括号里的 `pFunParam` 为别名：`typedef void (*pFunParam)();`。再替换左边的变量 `b` 为别名：`typedef void (*pFunx)(pFunParam);`，原声明的最简化版为：`pFun pFunx[10];`。  
